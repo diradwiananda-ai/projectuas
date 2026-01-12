@@ -1,0 +1,26 @@
+[phases.setup]
+# HAPUS python3 dan pip. Kita hanya butuh PHP dan Node.js.
+nixPkgs = ['php82', 'nodejs', 'php82Packages.composer']
+
+[phases.install]
+dependsOn = ['setup']
+cmds = [
+    'composer install --no-dev --optimize-autoloader', 
+    'npm install'
+]
+
+[phases.build]
+dependsOn = ['install']
+cmds = [
+    'npm run build',
+    'php artisan route:cache',
+    'php artisan view:cache'
+]
+
+[start]
+# Perintah start menjadi lebih sederhana:
+# 1. Tidak ada 'python3 scraper.py'.
+# 2. Langsung membersihkan cache config.
+# 3. Menjalankan migrasi dan seeding (membaca file trends.json yang Anda upload).
+# 4. Menjalankan server.
+cmd = 'php artisan config:clear && php artisan migrate:fresh --force --seed && php artisan serve --host=0.0.0.0 --port=$PORT'
