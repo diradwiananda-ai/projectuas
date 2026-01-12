@@ -1,6 +1,6 @@
 [phases.setup]
 # HAPUS python3 dan pip. Kita hanya butuh PHP dan Node.js.
-nixPkgs = ['php82', 'nodejs', 'php82Packages.composer']
+nixPkgs = ['php84', 'nodejs', 'php84Packages.composer']
 
 [phases.install]
 dependsOn = ['setup']
